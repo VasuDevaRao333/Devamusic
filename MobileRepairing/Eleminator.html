@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid p-5 bg-primary text-white text-center">
+        <h1>Basic Electronics and Mobile Repairing</h1>
+    </div>
+
+    <div class="container-fluid">
+        <br>
+        <!-- Nav tabs -->
+        <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Dev</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./Electronics.html">Electronics</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>		
+        </nav>
+
+        <!-- Tab panes -->
+
+        <div class="container"><br>
+            <h3>Eleminator</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                et dolore magna aliqua.</p>
+
+            <div id="accordion">
+                <div class="card">
+                    <div class="card-header">
+                        <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+                           Eleminator
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+                        <div class="card-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#english">English</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#telugu">Telugu</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#hindi">Hindi</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tamil">Tamil</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#bengali">Bengali</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div id="english" class="container tab-pane active"><br>
+                                    <h3>English</h3><hr>
+                                    <ol>
+                                     <li>In the above circuit the transformer takes the AC voltage and lowers the AC voltage in the secondary</li>
+                                     <li>The diode converts the AC voltage in the secondary of the transformer into DC and forwards it</li>
+                                     <li>Diode converts AC to DC but not pure DC</li>
+                                     <li>The diode then converts the pulsating DC to pure DC by the polarity capacitor and is sent to the load so the load operates continuously.</li>
+                                     <li>This is called eliminator and charger is used as eliminator</li>
+                </ol>
+                </div>
+                <div id="telugu" class="container tab-pane fade"><br>
+                                    <h3>Telugu</h3><hr>
+                                    <ol>
+                                     <li>పై సర్క్యూట్ లో ట్రాన్స్ఫార్మర్ ఏసి వోల్టేజ్ ను తీసుకొని సెకండరీలో ఏసీ వోల్టేజ్ ను తగ్గించి పంపుతుంది</li>
+                                     <li>ట్రాన్స్ఫార్మర్ సెకండరీ లో వచ్చిన ac వోల్టేజ్ ను డయోడ్ డీసీ గా మార్చి ముందుకు పంపుతుంది</li>
+                                     <li>డయోడ్ ఏసీ ని డిసి గా మారుస్తుంది కానీ ప్యూర్ డి సి గా మార్చలేదు</li>
+                                     <li>డయోడ్ తరువాత వచ్చిన పులేటేటింగ్ డిసి ని పొలారిటీ కెపాసిటర్ ప్యూర్ డి సి గా మార్చి లోడ్ కు పంపుతుంది కాబట్టి లోడ్ కంటిన్యూస్గా పనిచేస్తుంది</li>
+                                     <li>దీనినే ఎలిమినేటర్ అంటారు ఎలిమినేటర్ గా చార్జర్ ని ఉపయోగిస్తారు</li>
+                                    </ol>
+                                </div>
+                                <div id="hindi" class="container tab-pane fade"><br>
+                                    <h3>Hindi</h3><hr>
+                                    <ol>
+                                     <li>उपरोक्त सर्किट में ट्रांसफार्मर एसी वोल्टेज लेता है और सेकेंडरी में एसी वोल्टेज को कम करता है</li>
+                                     <li>डायोड ट्रांसफार्मर के सेकेंडरी में AC वोल्टेज को DC में परिवर्तित करता है और इसे आगे बढ़ाता है</li>
+                                     <li>डायोड AC को DC में परिवर्तित करता है लेकिन शुद्ध DC में नहीं</li>
+                                     <li>फिर डायोड पोलरिटी कैपेसिटर द्वारा स्पंदित डीसी को शुद्ध डीसी में परिवर्तित करता है और लोड पर भेजा जाता है ताकि लोड लगातार संचालित हो।</li>
+                                     <li>इसे एलिमिनेटर कहा जाता है और एलिमिनेटर के रूप में चार्जर का उपयोग किया जाता है</li>
+                                    </ol>
+                                </div>
+                 <div id="tamil" class="container tab-pane fade"><br>
+                <h3>Tamil</h3><hr>
+               <ol>
+                                     <li>மேலே உள்ள சர்க்யூட்டில் மின்மாற்றி AC மின்னழுத்தத்தை எடுத்து, இரண்டாம்நிலையில் AC மின்னழுத்தத்தைக் குறைக்கிறது</li>
+                                     <li>டையோடு மின்மாற்றியின் இரண்டாம்நிலையில் உள்ள ஏசி மின்னழுத்தத்தை டிசியாக மாற்றி அதை அனுப்புகிறது</li>
+                                     <li>டையோடு ஏசியை டிசியாக மாற்றுகிறது ஆனால் தூய டிசி அல்ல</li>
+                                     <li>டையோடு துருவமுனை மின்தேக்கி மூலம் துடிக்கும் DCயை தூய DC ஆக மாற்றுகிறது மற்றும் சுமைக்கு அனுப்பப்படுகிறது, அதனால் சுமை தொடர்ந்து இயங்குகிறது.</li>
+                                     <li>இது எலிமினேட்டர் என்றும் சார்ஜர் எலிமினேட்டராகவும் பயன்படுத்தப்படுகிறது</li>                                              
+                </ol>
+              </div>
+             <div id="bengali" class="container tab-pane fade"><br>
+                                    <h3>Bengali</h3><hr>
+                                    <ol>
+                                      <li>উপরের সার্কিটে ট্রান্সফরমার এসি ভোল্টেজ নেয় এবং সেকেন্ডারিতে এসি ভোল্টেজ কমায়</li>
+                                     <li>ডায়োড ট্রান্সফরমারের সেকেন্ডারি এসি ভোল্টেজকে ডিসিতে রূপান্তর করে এবং এটিকে এগিয়ে দেয়</li>
+                                     <li>ডায়োড এসিকে ডিসিতে রূপান্তর করে কিন্তু বিশুদ্ধ ডিসি নয়</li>
+                                     <li>ডায়োড তারপর পোলারিটি ক্যাপাসিটর দ্বারা স্পন্দনশীল ডিসিকে বিশুদ্ধ ডিসিতে রূপান্তর করে এবং লোডে পাঠানো হয় যাতে লোডটি ক্রমাগত কাজ করে।</li>
+                                     <li>একে এলিমিনেটর বলে এবং চার্জারকে এলিমিনেটর হিসেবে ব্যবহার করা হয়</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>=
