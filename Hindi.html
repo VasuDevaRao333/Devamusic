@@ -1,826 +1,834 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <title>Music Player with Folders</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial
-    }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Music Player with Animation</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #1d1f21, #4b4f56);
+            color: white;
+            text-align: center;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: backgroundAnimation 10s infinite alternate;
+        }
 
-    .topnav {
-      overflow: hidden;
-      background-color: slategrey;
-    }
+        @keyframes backgroundAnimation {
+            0% {
+                background: linear-gradient(to bottom right, #1d1f21, #4b4f56);
+            }
 
-    .topnav a {
-      float: left;
-      display: block;
-      color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 17px;
-    }
+            50% {
+                background: linear-gradient(to bottom right, #4b4f56, #1d1f21);
+            }
 
-    .active {
-      background-color: lightblue;
-      color: white;
-    }
+            100% {
+                background: linear-gradient(to bottom right, #1d1f21, #4b4f56);
+            }
+        }
 
-    .topnav .icon {
-      display: none;
-    }
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+            transition: background-color 0.5s ease;
+        }
 
-    .dropdown {
-      float: left;
-      overflow: hidden;
-    }
+        .topnav a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            transition: all 0.3s ease;
+        }
 
-    .dropdown .dropbtn {
-      font-size: 17px;
-      border: none;
-      outline: none;
-      color: white;
-      padding: 14px 16px;
-      background-color: inherit;
-      font-family: inherit;
-      margin: 0;
-    }
+        .topnav a:hover {
+            background-color: #575757;
+            transform: scale(1.1);
+        }
 
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-      z-index: 1;
-    }
+        .active {
+            background-color: #5f30ce;
+            color: white;
+        }
 
-    .dropdown-content a {
-      float: none;
-      color: black;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-      text-align: left;
-    }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+            }
 
-    .topnav a:hover,
-    .dropdown:hover .dropbtn {
-      background-color: #555;
-      color: white;
-    }
+            to {
+                transform: translateY(0);
+            }
+        }
 
-    .dropdown-content a:hover {
-      background-color: #ddd;
-      color: black;
-    }
+        .topnav a {
+            animation: slideIn 0.5s ease-out;
+        }
 
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
+        .music-player {
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            flex-grow: 1;
+            animation: fadeIn 1s ease-out;
+        }
 
-    @media screen and (max-width: 600px) {
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
 
-      .topnav a:not(:first-child),
-      .dropdown .dropbtn {
-        display: none;
-      }
+            to {
+                opacity: 1;
+            }
+        }
 
-      .topnav a.icon {
-        float: right;
-        display: block;
-      }
-    }
+        .playlist {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
 
-    @media screen and (max-width: 600px) {
-      .topnav.responsive {
-        position: relative;
-      }
+        .playlist li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s, color 0.3s;
+        }
 
-      .topnav.responsive .icon {
-        position: absolute;
-        right: 0;
-        top: 0;
-      }
+        .playlist li:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffcc00;
+            text-shadow: 0 0 10px #ffcc00;
+        }
 
-      .topnav.responsive a {
-        float: none;
-        display: block;
-        text-align: left;
-      }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            position: relative;
+        }
 
-      .topnav.responsive .dropdown {
-        float: none;
-      }
+        .controls button {
+            background: linear-gradient(145deg, #5f30ce, #3b1c6d);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-      .topnav.responsive .dropdown-content {
-        position: relative;
-      }
+        .controls button:hover {
+            background: linear-gradient(145deg, #ffcc00, #e0b500);
+            color: black;
+            transform: translateY(-6px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
 
-      .topnav.responsive .dropdown .dropbtn {
-        display: block;
-        width: 100%;
-        text-align: left;
-      }
-    }
+        .controls button:active {
+            background: linear-gradient(145deg, #e0b500, #ffcc00);
+            transform: translateY(2px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
 
-    /* Your CSS styles go here */
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f0f0f0;
-    }
+        .controls button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+        }
 
-    .music-player {
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 20px;
-      background-color: #fff;
-      background-image: url(./musicplayer.png);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+        .song-title {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            animation: fadeIn 1s ease-out;
+        }
 
-    h1 {
-      margin: 0;
-      margin-bottom: 20px;
-    }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            margin-top: 10px;
+        }
 
-    .playlist {
-      list-style: none;
-      padding: 0;
-      overflow-y: auto;
-      max-height: 300px;
-    }
+        .progress-bar .progress {
+            height: 100%;
+            background: linear-gradient(145deg, #ffcc00, #e0b500);
+            width: 0;
+            border-radius: 5px;
+            animation: progressAnimation 0.1s linear infinite;
+        }
 
-    .playlist li {
-      cursor: pointer;
-      text-align: start;
-      color: #fff;
-      text-shadow: black;
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
-    }
+        @keyframes progressAnimation {
+            0% {
+                width: 0%;
+            }
 
-    .playlist li:last-child {
-      border-bottom: none;
-    }
+            100% {
+                width: 100%;
+            }
+        }
 
-    .playlist li:hover {
-      background-color: #f0f0f0;
-      color: black;
-      border-radius: 5px;
-    }
+        input {
+            width: 80%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 20px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: background 0.3s ease;
+        }
 
-    .controls {
-      margin-top: 20px;
-    }
+        input::placeholder {
+            color: #999;
+        }
 
-    .controls button {
-      padding: 10px 25px;
-      margin: 5px;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+        input:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #ffcc00;
+        }
 
-    .controls button:hover {
-      background-color: #5f30ce;
-      color: white;
+        @media (max-width: 768px) {
+            .music-player {
+                width: 90%;
+            }
 
-    }
+            .topnav a {
+                font-size: 14px;
+            }
 
-    .song-title {
-      font-size: 25px;
-      color: white;
-    }
+            .controls button {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+        }
 
-    input {
-      width: 250px;
-      height: 24px;
-      font-size: 15px;
-    }
-  </style>
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .music-player {
+                width: 95%;
+                padding: 10px;
+            }
+
+            .controls button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <h1>Music Player</h1>
-  <div class="topnav" id="myTopnav">
-    <a href="./MusicPlayer.html" class="active">Home</a>
-    <a href="./Telugu.html">Telugu</a>
-    <a href="./Hindi.html">Hindi</a>
-    <a href="./Tamil.html">Tamil</a>
-    <a href="./English.html">English</a>
-    <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
-  </div>
-
-  <h2>Hindi Songs</h2>
-  <div class="music-player">
     <h1>Music Player</h1>
-    <input type="text" id="searchBar" placeholder="Search for a song . . .">
-    <div class="playlist">
-      <!-- Song items will be dynamically added here -->
+    <div class="topnav" id="myTopnav">
+        <a href="./MusicPlayer.html" class="active">Home</a>
+        <a href="./Telugu.html">Telugu</a>
+        <a href="./Hindi.html">Hindi</a>
+        <a href="./Tamil.html">Tamil</a>
+        <a href="./English.html">English</a>
     </div>
 
-    <div class="controls">
-      <button id="prevBtn">Previous</button>
-      <button id="playBtn">Play</button>
-      <button id="nextBtn">Next</button>
+    <h2>English Songs</h2>
+    <div class="music-player">
+        <input type="text" id="searchBar" placeholder="Search for a song...">
+        <ul class="playlist">
+            <!-- Playlist dynamically populated here -->
+        </ul>
+        <div class="controls">
+            <button id="prevBtn">Previous</button>
+            <button id="playBtn">Play</button>
+            <button id="nextBtn">Next</button>
+        </div>
+        <div class="song-title"></div>
+        <audio controls id="audioPlayer">
+            <source id="audioSource" src="" type="audio/mpeg">
+        </audio>
     </div>
-    <div class="song-title"></div>
-    <audio controls id="audioPlayer" autoplay>
-      <source id="audioSource" src="" type="audio/mpeg">
-    </audio>
-  </div>
 
-  <script>
-    //Navbar code
-    function myFunction() {
-      var x = document.getElementById("myTopnav");
-      if (x.className === "topnav") {
-        x.className += " responsive";
-      } else {
-        x.className = "topnav";
-      }
-    }
+    <script>
+        const playlistElement = document.querySelector('.playlist');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const audioSource = document.getElementById('audioSource');
+        const prevBtn = document.getElementById('prevBtn');
+        const playBtn = document.getElementById('playBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const songTitleElement = document.querySelector('.song-title');
 
-    const playlistElement = document.querySelector('.playlist');
-    const audioPlayer = document.getElementById('audioPlayer');
-    const audioSource = document.getElementById('audioSource');
-    const prevBtn = document.getElementById('prevBtn');
-    const playBtn = document.getElementById('playBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const songTitleElement = document.querySelector('.song-title');
+        const songs = [
+            {
+                title: '01 - Gadbai - Akull',
+                source: './Hindi/OldHindiSongs/AkullSongs (1).mp3',
+            },
+            {
+                title: '02 - I Love You Akull',
+                source: './Hindi/OldHindiSongs/AkullSongs (2).mp3',
+            },
+            {
+                title: '03 - Akull On The Beat',
+                source: './Hindi/OldHindiSongs/AkullSongs (3).mp3',
+            },
+            {
+                title: '04 - Laal Chunariya Akull',
+                source: './Hindi/OldHindiSongs/AkullSongs (4).mp3',
+            },
+            {
+                title: '05 - Faraar-Akull',
+                source: './Hindi/OldHindiSongs/AkullSongs (5).mp3',
+            },
+            {
+                title: '06 - Laal Mehendiyaan',
+                source: './Hindi/OldHindiSongs/AkullSongs (6).mp3',
+            },
+            {
+                title: '07 - Phone-Kapil Sahdev',
+                source: './Hindi/OldHindiSongs/AkullSongs (7).mp3',
+            },
+            {
+                title: '08 - Solemate',
+                source: './Hindi/OldHindiSongs/AkullSongs (8).mp3',
+            },
+            {
+                title: '09 - Tera Hua Bad Boy',
+                source: './Hindi/OldHindiSongs/AkullSongs (9).mp3',
+            },
+            {
+                title: '10 - Yaad Na Aaye',
+                source: './Hindi/OldHindiSongs/AkullSongs (10).mp3',
+            },
+            {
+                title: '11 - Bahana',
+                source: './Hindi/OldHindiSongs/AkullSongs (11).mp3',
+            },
+            {
+                title: ' 12 - Daffa Ho',
+                source: './Hindi/OldHindiSongs/AkullSongs (12).mp3',
+            },
+            {
+                title: '13 - Faraar Still in The Game',
+                source: './Hindi/OldHindiSongs/AkullSongs (13).mp3',
+            },
+            {
+                title: '14 - Future Mehbooba - Akull',
+                source: './Hindi/OldHindiSongs/AkullSongs (14).mp3',
+            },
+            {
+                title: '15 - Roll Roll -Akull',
+                source: './Hindi/OldHindiSongs/AkullSongs (15).mp3',
+            },
+            {
+                title: '01 - Musafir Hoon Yaaron',
+                source: './Hindi/OldHindiSongs/HindiOld (1).mp3',
+            },
+            {
+                title: '02 - Kya Yehi Pyar Hai',
+                source: './Hindi/OldHindiSongs/HindiOld (2).mp3',
+            },
+            {
+                title: '03 - Gum Hai Kisi Ke Pyar Mein',
+                source: './Hindi/OldHindiSongs/HindiOld (3).mp3',
+            },
+            {
+                title: '04 - Sagar Jaisi Aankhon Wali',
+                source: './Hindi/OldHindiSongs/HindiOld (4).mp3',
+            },
+            {
+                title: '05 - Dilbar Mere kab Tak',
+                source: './Hindi/OldHindiSongs/HindiOld (5).mp3',
+            },
+            {
+                title: '06 - Inteha Ho Gayi Intezaar ki',
+                source: './Hindi/OldHindiSongs/HindiOld (6).mp3',
+            },
+            {
+                title: '07 - Mujhe Naulakha Manga De',
+                source: './Hindi/OldHindiSongs/HindiOld (7).mp3',
+            },
+            {
+                title: '08 - Ye Dosti Hum Nahi Todenge',
+                source: './Hindi/OldHindiSongs/HindiOld (8).mp3',
+            },
+            {
+                title: '09 - Dekha Ek Khwab To',
+                source: './Hindi/OldHindiSongs/HindiOld (9).mp3',
+            },
+            {
+                title: '10 - Shayad Meri Shadi ',
+                source: './Hindi/OldHindiSongs/HindiOld (10).mp3',
+            },
+            {
+                title: '11 - Zindagi Pyar Ka Geet',
+                source: './Hindi/OldHindiSongs/HindiOld (11).mp3',
+            },
+            {
+                title: '12 - Chhukar Mere Man Ko',
+                source: './Hindi/OldHindiSongs/HindiOld (12).mp3',
+            },
+            {
+                title: '13 - Tere Jaisa Yaar Kahan',
+                source: './Hindi/OldHindiSongs/HindiOld (13).mp3',
+            },
+            {
+                title: '14 - Tu Tu Hey Wohi',
+                source: './Hindi/OldHindiSongs/HindiOld (14).mp3',
+            },
+            {
+                title: '15 - Yeh Hai Bambai kNagaria',
+                source: './Hindi/OldHindiSongs/HindiOld (15).mp3',
+            },
+            {
+                title: '16 - Yeh Mera Dil Yaar Ka Diwana',
+                source: './Hindi/OldHindiSongs/HindiOld (16).mp3',
+            },
+            {
+                title: '17 - Are Diwano Mujhe Pehchano',
+                source: './Hindi/OldHindiSongs/HindiOld (17).mp3',
+            },
+            {
+                title: '18 - Tere Bina Zindagi Se',
+                source: './Hindi/OldHindiSongs/HindiOld (18).mp3',
+            },
+            {
+                title: '19 - Bachna Ae Haseeno',
+                source: './Hindi/OldHindiSongs/HindiOld (19).mp3',
+            },
+            {
+                title: '20 - Salamat Rahe Dostana Hamara',
+                source: './Hindi/OldHindiSongs/HindiOld (20).mp3',
+            },
+            {
+                title: '21 - Panna Ki Tamanna Hai',
+                source: './Hindi/OldHindiSongs/HindiOld (21).mp3',
+            },
+            {
+                title: '22 - Tere Chehre Se Nazar',
+                source: './Hindi/OldHindiSongs/HindiOld (22).mp3',
+            },
+            {
+                title: '23 - Apni To Jaise Taise ',
+                source: './Hindi/OldHindiSongs/HindiOld (23).mp3',
+            },
+            {
+                title: '24 - Zindagi Ki Yahi Reet Hai',
+                source: './Hindi/OldHindiSongs/HindiOld (24).mp3',
+            },
+            {
+                title: '25 - O Saathi Re Tere Bina',
+                source: './Hindi/OldHindiSongs/HindiOld (25).mp3',
+            },
+            {
+                title: '26 - Salam-E Ishq Meri Jaan',
+                source: './Hindi/OldHindiSongs/HindiOld (26).mp3',
+            },
+            {
+                title: '27 - Gore Rang Pe Na Itna',
+                source: './Hindi/OldHindiSongs/HindiOld (27).mp3',
+            },
+            {
+                title: '28 - Jiska Mujhe Tha Intezar',
+                source: './Hindi/OldHindiSongs/HindiOld (28).mp3',
+            },
+            {
+                title: '29 - Khaike Paan Banaras Wala',
+                source: './Hindi/OldHindiSongs/HindiOld (29).mp3',
+            },
+            {
+                title: '30 - Vada Karo Nahi Chodoge',
+                source: './Hindi/OldHindiSongs/HindiOld (30).mp3',
+            },
+            {
+                title: '31 - Humko Tumse Ho Gaya Hai Pyar',
+                source: './Hindi/OldHindiSongs/HindiOld (31).mp3',
+            },
+            {
+                title: '32 - Bheegi Bheegi Raaton Mein',
+                source: './Hindi/OldHindiSongs/HindiOld (32).mp3',
+            },
+            {
+                title: '33 - Zindagi Ek Safar Hai',
+                source: './Hindi/OldHindiSongs/HindiOld (33).mp3',
+            },
+            {
+                title: '34 - Mere Sapno Ki Rani Kab',
+                source: './Hindi/OldHindiSongs/HindiOld (34).mp3',
+            },
+            {
+                title: '35 - Pal Pal Dil Ke Paas',
+                source: './Hindi/OldHindiSongs/HindiOld (35).mp3',
+            },
+            {
+                title: '36 - Chalte Chalte Mere Yeh Geet',
+                source: './Hindi/OldHindiSongs/HindiOld (36).mp3',
+            },
+            {
+                title: '37 - Keh Doon Tumhe Ya Chup Rahun',
+                source: './Hindi/OldHindiSongs/HindiOld (37).mp3',
+            },
+            {
+                title: '38 - Tera Saath Hain Kitna Pyara',
+                source: './Hindi/OldHindiSongs/HindiOld (38).mp3',
+            },
+            {
+                title: '39 - Dil Kya Kare Jab Kisi Ko',
+                source: './Hindi/OldHindiSongs/HindiOld (39).mp3',
+            },
+            {
+                title: '40 - Tujh Sang Preet Lagai Sajna',
+                source: './Hindi/OldHindiSongs/HindiOld (40).mp3',
+            },
+            {
+                title: '41 - Neele Neele Ambar Par',
+                source: './Hindi/OldHindiSongs/HindiOld (41).mp3',
+            },
+            {
+                title: '42 - Meri Bheegi Bheegi Si Palkon',
+                source: './Hindi/OldHindiSongs/HindiOld (42).mp3',
+            },
+            {
+                title: '43 - Pyaar Deewana Hota Hai',
+                source: './Hindi/OldHindiSongs/HindiOld (43).mp3',
+            },
+            {
+                title: '44 - Yeh Sham Mastani',
+                source: './Hindi/OldHindiSongs/HindiOld (44).mp3',
+            },
+            {
+                title: '45 - Zindagi Ke Safar Mein',
+                source: './Hindi/OldHindiSongs/HindiOld (45).mp3',
+            },
+            {
+                title: '46 - Jiska Mujhe Tha Intezar',
+                source: './Hindi/OldHindiSongs/HindiOld (46).mp3',
+            },
+            {
+                title: '47 - Main Tere Pyar Mein Pagal',
+                source: './Hindi/OldHindiSongs/HindiOld (47).mp3',
+            },
+            {
+                title: '48 - Sagar Kinare Dil Yeh Pukare',
+                source: './Hindi/OldHindiSongs/HindiOld (48).mp3',
+            },
+            {
+                title: '49 - Humen Tumse Pyar Kitna',
+                source: './Hindi/OldHindiSongs/HindiOld (49).mp3',
+            },
+            {
+                title: '50 - Rim Jhim Gire Saawan',
+                source: './Hindi/OldHindiSongs/HindiOld (50).mp3',
+            },
+            {
+                title: '51 - Chala Jata Hoon ',
+                source: './Hindi/OldHindiSongs/HindiOld (51).mp3',
+            },
+            {
+                title: '52 - O Mere Dil Ke Chain',
+                source: './Hindi/OldHindiSongs/HindiOld (52).mp3',
+            },
+            {
+                title: '53 - Paradesia Yeh Sach Hai Piya',
+                source: './Hindi/OldHindiSongs/HindiOld (53).mp3',
+            },
+            {
+                title: '54 - Mere Mehboob Qayamat Hogi',
+                source: './Hindi/OldHindiSongs/HindiOld (54).mp3',
+            },
+            {
+                title: '55 - Aaja Mainu Mil Ja',
+                source: './Hindi/OldHindiSongs/HindiOld (55).mp3',
+            },
+            {
+                title: '56 - Aaja Ni Aaja',
+                source: './Hindi/OldHindiSongs/HindiOld (56).mp3',
+            },
+            {
+                title: '57 - Aise Na Chhoro',
+                source: './Hindi/OldHindiSongs/HindiOld (57).mp3',
+            },
+            {
+                title: '58 - Ak47 - Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (58).mp3',
+            },
+            {
+                title: '59 - High Rated Gabru',
+                source: './Hindi/OldHindiSongs/HindiOld (59).mp3',
+            },
+            {
+                title: '60 - High Rated Gabru',
+                source: './Hindi/OldHindiSongs/HindiOld (60).mp3',
+            },
+            {
+                title: '61 - Alone - Kapil Sharma,',
+                source: './Hindi/OldHindiSongs/HindiOld (61).mp3',
+            },
+            {
+                title: '62 - Ban Ja Rani',
+                source: './Hindi/OldHindiSongs/HindiOld (62).mp3',
+            },
+            {
+                title: '63 - Black - Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (63).mp3',
+            },
+            {
+                title: '64 - Black Raat',
+                source: './Hindi/OldHindiSongs/HindiOld (64).mp3',
+            },
+            {
+                title: '65 - Crazy Habibi Vs Decent Munda',
+                source: './Hindi/OldHindiSongs/HindiOld (65).mp3',
+            },
+            {
+                title: '66 - Daaru Wargi',
+                source: './Hindi/OldHindiSongs/HindiOld (66).mp3',
+            },
+            {
+                title: '67 - Darr Nu Daraa',
+                source: './Hindi/OldHindiSongs/HindiOld (67).mp3',
+            },
+            {
+                title: '68 - Designer',
+                source: './Hindi/OldHindiSongs/HindiOld (68).mp3',
+            },
+            {
+                title: '69 - Doob Gaye',
+                source: './Hindi/OldHindiSongs/HindiOld (69).mp3',
+            },
+            {
+                title: '70 - Enni Soni (Saaho)',
+                source: './Hindi/OldHindiSongs/HindiOld (70).mp3',
+            },
+            {
+                title: '71 - Fake Love - Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (71).mp3',
+            },
+            {
+                title: '72 - Fayaah Fayaah',
+                source: './Hindi/OldHindiSongs/HindiOld (72).mp3',
+            },
+            {
+                title: '73 - Golimaar - Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (73).mp3',
+            },
+            {
+                title: '74 - Yaari Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (74).mp3',
+            },
+            {
+                title: '75 - Ishq Tera - Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (75).mp3',
+            },
+            {
+                title: '76 - Kaun Nachdi',
+                source: './Hindi/OldHindiSongs/HindiOld (76).mp3',
+            },
+            {
+                title: '77 - Lagdi Hai Thaai',
+                source: './Hindi/OldHindiSongs/HindiOld (77).mp3',
+            },
+            {
+                title: '78 - Lagdi hai Thaai',
+                source: './Hindi/OldHindiSongs/HindiOld (78).mp3',
+            },
+            {
+                title: '79 - Lagdi Lahore Di ',
+                source: './Hindi/OldHindiSongs/HindiOld (79).mp3',
+            },
+            {
+                title: '80 - Lahore Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (80).mp3',
+            },
+            {
+                title: '81 - Main Chala Gure Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (81).mp3',
+            },
+            {
+                title: '82 - Mehendi Wale Haath',
+                source: './Hindi/OldHindiSongs/HindiOld (82).mp3',
+            },
+            {
+                title: '83 - Meri Deewani Hai Tu',
+                source: './Hindi/OldHindiSongs/HindiOld (83).mp3',
+            },
+            {
+                title: '84 - Moon Rise Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (84).mp3',
+            },
+            {
+                title: '85 - Morni Banke',
+                source: './Hindi/OldHindiSongs/HindiOld (85).mp3',
+            },
+            {
+                title: '86 - Nachle Na',
+                source: './Hindi/OldHindiSongs/HindiOld (86).mp3',
+            },
+            {
+                title: '87 - Nain Ta Heere',
+                source: './Hindi/OldHindiSongs/HindiOld (87).mp3',
+            },
+            {
+                title: '88 - Outfit ',
+                source: './Hindi/OldHindiSongs/HindiOld (88).mp3',
+            },
+            {
+                title: '89 - Patola (Blackmail)',
+                source: './Hindi/OldHindiSongs/HindiOld (89).mp3',
+            },
+            {
+                title: '90 - Punjabiyan Di Dhee',
+                source: './Hindi/OldHindiSongs/HindiOld (90).mp3',
+            },
+            {
+                title: '91 - Rona Rona Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (91).mp3',
+            },
+            {
+                title: '92 - Sign - Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (92).mp3',
+            },
+            {
+                title: '93 - Suit Suit (Hindi Medium)',
+                source: './Hindi/OldHindiSongs/HindiOld (93).mp3',
+            },
+            {
+                title: '94 - Surma Surma',
+                source: './Hindi/OldHindiSongs/HindiOld (94).mp3',
+            },
+            {
+                title: '95 - Taare Guru Randhawa',
+                source: './Hindi/OldHindiSongs/HindiOld (95).mp3',
+            },
+            {
+                title: '96 - Tera Ki Khayal',
+                source: './Hindi/OldHindiSongs/HindiOld (96).mp3',
+            },
+            {
+                title: '97 - Tera kSaath Ho',
+                source: './Hindi/OldHindiSongs/HindiOld (97).mp3',
+            },
+            {
+                title: '98 - Teri Choriyaan',
+                source: './Hindi/OldHindiSongs/HindiOld (98).mp3',
+            },
+            {
+                title: '99 - Tu Maan Meri Jaan',
+                source: './Hindi/OldHindiSongs/HindiOld (99).mp3',
+            },
+            {
+                title: '100 - Yaar Mod Do',
+                source: './Hindi/OldHindiSongs/HindiOld (100).mp3',
+            },
 
-    const songs = [
-      {
-        title: '01 - Gadbai - Akull',
-        source: './Hindi/OldHindiSongs/AkullSongs (1).mp3',
-      },
-      {
-        title: '02 - I Love You Akull',
-        source: './Hindi/OldHindiSongs/AkullSongs (2).mp3',
-      },
-      {
-        title: '03 - Akull On The Beat',
-        source: './Hindi/OldHindiSongs/AkullSongs (3).mp3',
-      },
-      {
-        title: '04 - Laal Chunariya Akull',
-        source: './Hindi/OldHindiSongs/AkullSongs (4).mp3',
-      },
-      {
-        title: '05 - Faraar-Akull',
-        source: './Hindi/OldHindiSongs/AkullSongs (5).mp3',
-      },
-      {
-        title: '06 - Laal Mehendiyaan',
-        source: './Hindi/OldHindiSongs/AkullSongs (6).mp3',
-      },
-      {
-        title: '07 - Phone-Kapil Sahdev',
-        source: './Hindi/OldHindiSongs/AkullSongs (7).mp3',
-      },
-      {
-        title: '08 - Solemate',
-        source: './Hindi/OldHindiSongs/AkullSongs (8).mp3',
-      },
-      {
-        title: '09 - Tera Hua Bad Boy',
-        source: './Hindi/OldHindiSongs/AkullSongs (9).mp3',
-      },
-      {
-        title: '10 - Yaad Na Aaye',
-        source: './Hindi/OldHindiSongs/AkullSongs (10).mp3',
-      },
-      {
-        title: '11 - Bahana',
-        source: './Hindi/OldHindiSongs/AkullSongs (11).mp3',
-      },
-      {
-        title: ' 12 - Daffa Ho',
-        source: './Hindi/OldHindiSongs/AkullSongs (12).mp3',
-      },
-      {
-        title: '13 - Faraar Still in The Game',
-        source: './Hindi/OldHindiSongs/AkullSongs (13).mp3',
-      },
-      {
-        title: '14 - Future Mehbooba - Akull',
-        source: './Hindi/OldHindiSongs/AkullSongs (14).mp3',
-      },
-      {
-        title: '15 - Roll Roll -Akull',
-        source: './Hindi/OldHindiSongs/AkullSongs (15).mp3',
-      },
-      {
-        title: '01 - Musafir Hoon Yaaron',
-        source: './Hindi/OldHindiSongs/HindiOld (1).mp3',
-      },
-      {
-        title: '02 - Kya Yehi Pyar Hai',
-        source: './Hindi/OldHindiSongs/HindiOld (2).mp3',
-      },
-      {
-        title: '03 - Gum Hai Kisi Ke Pyar Mein',
-        source: './Hindi/OldHindiSongs/HindiOld (3).mp3',
-      },
-      {
-        title: '04 - Sagar Jaisi Aankhon Wali',
-        source: './Hindi/OldHindiSongs/HindiOld (4).mp3',
-      },
-      {
-        title: '05 - Dilbar Mere kab Tak',
-        source: './Hindi/OldHindiSongs/HindiOld (5).mp3',
-      },
-      {
-        title: '06 - Inteha Ho Gayi Intezaar ki',
-        source: './Hindi/OldHindiSongs/HindiOld (6).mp3',
-      },
-      {
-        title: '07 - Mujhe Naulakha Manga De',
-        source: './Hindi/OldHindiSongs/HindiOld (7).mp3',
-      },
-      {
-        title: '08 - Ye Dosti Hum Nahi Todenge',
-        source: './Hindi/OldHindiSongs/HindiOld (8).mp3',
-      },
-      {
-        title: '09 - Dekha Ek Khwab To',
-        source: './Hindi/OldHindiSongs/HindiOld (9).mp3',
-      },
-      {
-        title: '10 - Shayad Meri Shadi ',
-        source: './Hindi/OldHindiSongs/HindiOld (10).mp3',
-      },
-      {
-        title: '11 - Zindagi Pyar Ka Geet',
-        source: './Hindi/OldHindiSongs/HindiOld (11).mp3',
-      },
-      {
-        title: '12 - Chhukar Mere Man Ko',
-        source: './Hindi/OldHindiSongs/HindiOld (12).mp3',
-      },
-      {
-        title: '13 - Tere Jaisa Yaar Kahan',
-        source: './Hindi/OldHindiSongs/HindiOld (13).mp3',
-      },
-      {
-        title: '14 - Tu Tu Hey Wohi',
-        source: './Hindi/OldHindiSongs/HindiOld (14).mp3',
-      },
-      {
-        title: '15 - Yeh Hai Bambai kNagaria',
-        source: './Hindi/OldHindiSongs/HindiOld (15).mp3',
-      },
-      {
-        title: '16 - Yeh Mera Dil Yaar Ka Diwana',
-        source: './Hindi/OldHindiSongs/HindiOld (16).mp3',
-      },
-      {
-        title: '17 - Are Diwano Mujhe Pehchano',
-        source: './Hindi/OldHindiSongs/HindiOld (17).mp3',
-      },
-      {
-        title: '18 - Tere Bina Zindagi Se',
-        source: './Hindi/OldHindiSongs/HindiOld (18).mp3',
-      },
-      {
-        title: '19 - Bachna Ae Haseeno',
-        source: './Hindi/OldHindiSongs/HindiOld (19).mp3',
-      },
-      {
-        title: '20 - Salamat Rahe Dostana Hamara',
-        source: './Hindi/OldHindiSongs/HindiOld (20).mp3',
-      },
-      {
-        title: '21 - Panna Ki Tamanna Hai',
-        source: './Hindi/OldHindiSongs/HindiOld (21).mp3',
-      },
-      {
-        title: '22 - Tere Chehre Se Nazar',
-        source: './Hindi/OldHindiSongs/HindiOld (22).mp3',
-      },
-      {
-        title: '23 - Apni To Jaise Taise ',
-        source: './Hindi/OldHindiSongs/HindiOld (23).mp3',
-      },
-      {
-        title: '24 - Zindagi Ki Yahi Reet Hai',
-        source: './Hindi/OldHindiSongs/HindiOld (24).mp3',
-      },
-      {
-        title: '25 - O Saathi Re Tere Bina',
-        source: './Hindi/OldHindiSongs/HindiOld (25).mp3',
-      },
-      {
-        title: '26 - Salam-E Ishq Meri Jaan',
-        source: './Hindi/OldHindiSongs/HindiOld (26).mp3',
-      },
-      {
-        title: '27 - Gore Rang Pe Na Itna',
-        source: './Hindi/OldHindiSongs/HindiOld (27).mp3',
-      },
-      {
-        title: '28 - Jiska Mujhe Tha Intezar',
-        source: './Hindi/OldHindiSongs/HindiOld (28).mp3',
-      },
-      {
-        title: '29 - Khaike Paan Banaras Wala',
-        source: './Hindi/OldHindiSongs/HindiOld (29).mp3',
-      },
-      {
-        title: '30 - Vada Karo Nahi Chodoge',
-        source: './Hindi/OldHindiSongs/HindiOld (30).mp3',
-      },
-      {
-        title: '31 - Humko Tumse Ho Gaya Hai Pyar',
-        source: './Hindi/OldHindiSongs/HindiOld (31).mp3',
-      },
-      {
-        title: '32 - Bheegi Bheegi Raaton Mein',
-        source: './Hindi/OldHindiSongs/HindiOld (32).mp3',
-      },
-      {
-        title: '33 - Zindagi Ek Safar Hai',
-        source: './Hindi/OldHindiSongs/HindiOld (33).mp3',
-      },
-      {
-        title: '34 - Mere Sapno Ki Rani Kab',
-        source: './Hindi/OldHindiSongs/HindiOld (34).mp3',
-      },
-      {
-        title: '35 - Pal Pal Dil Ke Paas',
-        source: './Hindi/OldHindiSongs/HindiOld (35).mp3',
-      },
-      {
-        title: '36 - Chalte Chalte Mere Yeh Geet',
-        source: './Hindi/OldHindiSongs/HindiOld (36).mp3',
-      },
-      {
-        title: '37 - Keh Doon Tumhe Ya Chup Rahun',
-        source: './Hindi/OldHindiSongs/HindiOld (37).mp3',
-      },
-      {
-        title: '38 - Tera Saath Hain Kitna Pyara',
-        source: './Hindi/OldHindiSongs/HindiOld (38).mp3',
-      },
-      {
-        title: '39 - Dil Kya Kare Jab Kisi Ko',
-        source: './Hindi/OldHindiSongs/HindiOld (39).mp3',
-      },
-      {
-        title: '40 - Tujh Sang Preet Lagai Sajna',
-        source: './Hindi/OldHindiSongs/HindiOld (40).mp3',
-      },
-      {
-        title: '41 - Neele Neele Ambar Par',
-        source: './Hindi/OldHindiSongs/HindiOld (41).mp3',
-      },
-      {
-        title: '42 - Meri Bheegi Bheegi Si Palkon',
-        source: './Hindi/OldHindiSongs/HindiOld (42).mp3',
-      },
-      {
-        title: '43 - Pyaar Deewana Hota Hai',
-        source: './Hindi/OldHindiSongs/HindiOld (43).mp3',
-      },
-      {
-        title: '44 - Yeh Sham Mastani',
-        source: './Hindi/OldHindiSongs/HindiOld (44).mp3',
-      },
-      {
-        title: '45 - Zindagi Ke Safar Mein',
-        source: './Hindi/OldHindiSongs/HindiOld (45).mp3',
-      },
-      {
-        title: '46 - Jiska Mujhe Tha Intezar',
-        source: './Hindi/OldHindiSongs/HindiOld (46).mp3',
-      },
-      {
-        title: '47 - Main Tere Pyar Mein Pagal',
-        source: './Hindi/OldHindiSongs/HindiOld (47).mp3',
-      },
-      {
-        title: '48 - Sagar Kinare Dil Yeh Pukare',
-        source: './Hindi/OldHindiSongs/HindiOld (48).mp3',
-      },
-      {
-        title: '49 - Humen Tumse Pyar Kitna',
-        source: './Hindi/OldHindiSongs/HindiOld (49).mp3',
-      },
-      {
-        title: '50 - Rim Jhim Gire Saawan',
-        source: './Hindi/OldHindiSongs/HindiOld (50).mp3',
-      },
-      {
-        title: '51 - Chala Jata Hoon ',
-        source: './Hindi/OldHindiSongs/HindiOld (51).mp3',
-      },
-      {
-        title: '52 - O Mere Dil Ke Chain',
-        source: './Hindi/OldHindiSongs/HindiOld (52).mp3',
-      },
-      {
-        title: '53 - Paradesia Yeh Sach Hai Piya',
-        source: './Hindi/OldHindiSongs/HindiOld (53).mp3',
-      },
-      {
-        title: '54 - Mere Mehboob Qayamat Hogi',
-        source: './Hindi/OldHindiSongs/HindiOld (54).mp3',
-      },
-      {
-        title: '55 - Aaja Mainu Mil Ja',
-        source: './Hindi/OldHindiSongs/HindiOld (55).mp3',
-      },
-       {
-        title: '56 - Aaja Ni Aaja',
-        source: './Hindi/OldHindiSongs/HindiOld (56).mp3',
-      },
-       {
-        title: '57 - Aise Na Chhoro',
-        source: './Hindi/OldHindiSongs/HindiOld (57).mp3',
-      },
-       {
-        title: '58 - Ak47 - Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (58).mp3',
-      },
-       {
-        title: '59 - High Rated Gabru',
-        source: './Hindi/OldHindiSongs/HindiOld (59).mp3',
-      },
-       {
-        title: '60 - High Rated Gabru',
-        source: './Hindi/OldHindiSongs/HindiOld (60).mp3',
-      },
-      {
-        title: '61 - Alone - Kapil Sharma,',
-        source: './Hindi/OldHindiSongs/HindiOld (61).mp3',
-      },
-      {
-        title: '62 - Ban Ja Rani',
-        source: './Hindi/OldHindiSongs/HindiOld (62).mp3',
-      },
-      {
-        title: '63 - Black - Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (63).mp3',
-      },
-      {
-        title: '64 - Black Raat',
-        source: './Hindi/OldHindiSongs/HindiOld (64).mp3',
-      },
-      {
-        title: '65 - Crazy Habibi Vs Decent Munda',
-        source: './Hindi/OldHindiSongs/HindiOld (65).mp3',
-      },
-      {
-        title: '66 - Daaru Wargi',
-        source: './Hindi/OldHindiSongs/HindiOld (66).mp3',
-      },
-      {
-        title: '67 - Darr Nu Daraa',
-        source: './Hindi/OldHindiSongs/HindiOld (67).mp3',
-      },
-      {
-        title: '68 - Designer',
-        source: './Hindi/OldHindiSongs/HindiOld (68).mp3',
-      },
-      {
-        title: '69 - Doob Gaye',
-        source: './Hindi/OldHindiSongs/HindiOld (69).mp3',
-      },
-      {
-        title: '70 - Enni Soni (Saaho)',
-        source: './Hindi/OldHindiSongs/HindiOld (70).mp3',
-      },
-      {
-        title: '71 - Fake Love - Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (71).mp3',
-      },
-      {
-        title: '72 - Fayaah Fayaah',
-        source: './Hindi/OldHindiSongs/HindiOld (72).mp3',
-      },
-      {
-        title: '73 - Golimaar - Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (73).mp3',
-      },
-      {
-        title: '74 - Yaari Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (74).mp3',
-      },
-      {
-        title: '75 - Ishq Tera - Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (75).mp3',
-      },
-      {
-        title: '76 - Kaun Nachdi',
-        source: './Hindi/OldHindiSongs/HindiOld (76).mp3',
-      },
-      {
-        title: '77 - Lagdi Hai Thaai',
-        source: './Hindi/OldHindiSongs/HindiOld (77).mp3',
-      },
-      {
-        title: '78 - Lagdi hai Thaai',
-        source: './Hindi/OldHindiSongs/HindiOld (78).mp3',
-      },
-      {
-        title: '79 - Lagdi Lahore Di ',
-        source: './Hindi/OldHindiSongs/HindiOld (79).mp3',
-      },
-      {
-        title: '80 - Lahore Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (80).mp3',
-      },
-      {
-        title: '81 - Main Chala Gure Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (81).mp3',
-      },
-      {
-        title: '82 - Mehendi Wale Haath',
-        source: './Hindi/OldHindiSongs/HindiOld (82).mp3',
-      },
-      {
-        title: '83 - Meri Deewani Hai Tu',
-        source: './Hindi/OldHindiSongs/HindiOld (83).mp3',
-      },
-      {
-        title: '84 - Moon Rise Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (84).mp3',
-      },
-      {
-        title: '85 - Morni Banke',
-        source: './Hindi/OldHindiSongs/HindiOld (85).mp3',
-      },
-      {
-        title: '86 - Nachle Na',
-        source: './Hindi/OldHindiSongs/HindiOld (86).mp3',
-      },
-      {
-        title: '87 - Nain Ta Heere',
-        source: './Hindi/OldHindiSongs/HindiOld (87).mp3',
-      },
-      {
-        title: '88 - Outfit ',
-        source: './Hindi/OldHindiSongs/HindiOld (88).mp3',
-      },
-      {
-        title: '89 - Patola (Blackmail)',
-        source: './Hindi/OldHindiSongs/HindiOld (89).mp3',
-      },
-      {
-        title: '90 - Punjabiyan Di Dhee',
-        source: './Hindi/OldHindiSongs/HindiOld (90).mp3',
-      },
-      {
-        title: '91 - Rona Rona Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (91).mp3',
-      },
-      {
-        title: '92 - Sign - Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (92).mp3',
-      },
-      {
-        title: '93 - Suit Suit (Hindi Medium)',
-        source: './Hindi/OldHindiSongs/HindiOld (93).mp3',
-      },
-      {
-        title: '94 - Surma Surma',
-        source: './Hindi/OldHindiSongs/HindiOld (94).mp3',
-      },
-      {
-        title: '95 - Taare Guru Randhawa',
-        source: './Hindi/OldHindiSongs/HindiOld (95).mp3',
-      },
-      {
-        title: '96 - Tera Ki Khayal',
-        source: './Hindi/OldHindiSongs/HindiOld (96).mp3',
-      },
-      {
-        title: '97 - Tera kSaath Ho',
-        source: './Hindi/OldHindiSongs/HindiOld (97).mp3',
-      },
-      {
-        title: '98 - Teri Choriyaan',
-        source: './Hindi/OldHindiSongs/HindiOld (98).mp3',
-      },
-      {
-        title: '99 - Tu Maan Meri Jaan',
-        source: './Hindi/OldHindiSongs/HindiOld (99).mp3',
-      },
-      {
-        title: '100 - Yaar Mod Do',
-        source: './Hindi/OldHindiSongs/HindiOld (100).mp3',
-      },
+            // Add more songs here
+        ];
+        let currentSongIndex = 0;
 
-      // Add more songs here
-    ];
+        function createPlaylistItem(song) {
+            const li = document.createElement('li');
+            li.textContent = song.title;
+            li.addEventListener('click', () => playSong(song.source));
+            return li;
+        }
 
-    let currentSongIndex = 0;
+        function populatePlaylist() {
+            songs.forEach(song => {
+                const playlistItem = createPlaylistItem(song);
+                playlistElement.appendChild(playlistItem);
+            });
+        }
 
-    // Function to create a playlist item
-    function createPlaylistItem(song) {
-      const li = document.createElement('li');
-      li.textContent = song.title;
-      li.addEventListener('click', () => playSong(song.source));
-      return li;
-    }
+        function playSong(source) {
+            audioSource.src = source;
+            audioPlayer.load();
+            audioPlayer.play();
+            updateSongTitle();
+            updatePlayPauseIcon();
+        }
 
-    // Function to populate the playlist
-    function populatePlaylist() {
-      songs.forEach(song => {
-        const playlistItem = createPlaylistItem(song);
-        playlistElement.appendChild(playlistItem);
-      });
-    }
+        function updateSongTitle() {
+            const currentSong = songs[currentSongIndex];
+            songTitleElement.textContent = currentSong.title;
+        }
 
-    // Function to play a song
-    function playSong(source) {
-      audioSource.src = source;
-      audioPlayer.load();
-      audioPlayer.play();
-      updateSongTitle();
-      updatePlayPauseIcon();
-    }
-    // Function to update the song title display
-    function updateSongTitle() {
-      const currentSong = songs[currentSongIndex];
-      songTitleElement.textContent = currentSong.title;
-    }
+        function updatePlayPauseIcon() {
+            if (audioPlayer.paused) {
+                playBtn.textContent = 'Play';
+            } else {
+                playBtn.textContent = 'Pause';
+            }
+        }
 
-    // Function to toggle play/pause icon
-    function updatePlayPauseIcon() {
-      if (audioPlayer.paused) {
-        playBtn.textContent = 'Play';
-      } else {
-        playBtn.textContent = 'Pause';
-      }
-    }
+        function playPreviousSong() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            playSong(songs[currentSongIndex].source);
+        }
 
-    // Function to play the previous song
-    function playPreviousSong() {
-      currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-      playSong(songs[currentSongIndex].source);
-    }
+        function playNextSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            playSong(songs[currentSongIndex].source);
+        }
 
-    // Function to play the next song
-    function playNextSong() {
-      currentSongIndex = (currentSongIndex + 1) % songs.length;
-      playSong(songs[currentSongIndex].source);
-    }
+        playBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+            } else {
+                audioPlayer.pause();
+            }
+            updatePlayPauseIcon();
+        });
 
-    // Event listener for the play button
-    playBtn.addEventListener('click', () => {
-      if (audioPlayer.paused) {
-        audioPlayer.play();
-      } else {
-        audioPlayer.pause();
-      }
-      updatePlayPauseIcon();
-    });
+        prevBtn.addEventListener('click', playPreviousSong);
 
-    // Event listener for the previous button
-    prevBtn.addEventListener('click', playPreviousSong);
+        nextBtn.addEventListener('click', playNextSong);
 
-    // Event listener for the next button
-    nextBtn.addEventListener('click', playNextSong);
+        audioPlayer.addEventListener('ended', playNextSong);
 
-    // Event listener to update the current song index when the audio ends
-    audioPlayer.addEventListener('ended', playNextSong);
+        populatePlaylist();
+        updateSongTitle();
 
-    // Initialize the playlist
-    populatePlaylist();
-    updateSongTitle();
+        playSong(songs[currentSongIndex].source);
 
-    // Autoplay the first song
-    playSong(songs[currentSongIndex].source);
-
-
-    <!-- ... (existing JavaScript code) ... -->
-
-    // Function to filter songs based on the search query
-    function filterSongs(searchQuery) {
-      const filteredSongs = songs.filter(song => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
-      playlistElement.innerHTML = ''; // Clear the existing playlist
-      filteredSongs.forEach(song => {
-        const playlistItem = createPlaylistItem(song);
-        playlistElement.appendChild(playlistItem);
-      });
-    }
-
-    // Event listener for the search bar input
-    const searchBar = document.getElementById('searchBar');
-    searchBar.addEventListener('input', () => {
-      const searchQuery = searchBar.value.trim();
-      filterSongs(searchQuery);
-    });
-  </script>
+        // Filtering songs based on search input
+        const searchBar = document.getElementById('searchBar');
+        searchBar.addEventListener('input', () => {
+            const searchQuery = searchBar.value.trim().toLowerCase();
+            playlistElement.innerHTML = '';
+            const filteredSongs = songs.filter(song => song.title.toLowerCase().includes(searchQuery));
+            filteredSongs.forEach(song => {
+                const playlistItem = createPlaylistItem(song);
+                playlistElement.appendChild(playlistItem);
+            });
+        });
+    </script>
 </body>
 
 </html>
