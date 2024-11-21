@@ -18,11 +18,27 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+
+        @keyframes backgroundAnimation {
+            0% {
+                background: linear-gradient(to bottom right, #1d1f21, #4b4f56);
+            }
+
+            50% {
+                background: linear-gradient(to bottom right, #4b4f56, #1d1f21);
+            }
+
+            100% {
+                background: linear-gradient(to bottom right, #1d1f21, #4b4f56);
+            }
         }
 
         .topnav {
             overflow: hidden;
             background-color: #333;
+            transition: background-color 0.5s ease;
         }
 
         .topnav a {
@@ -33,16 +49,31 @@
             padding: 14px 16px;
             text-decoration: none;
             font-size: 17px;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
         }
 
         .topnav a:hover {
             background-color: #575757;
+            transform: scale(1.1);
         }
 
         .active {
             background-color: #5f30ce;
             color: white;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .topnav a {
+            animation: slideIn 0.5s ease-out;
         }
 
         .music-player {
@@ -55,6 +86,17 @@
             position: relative;
             overflow: hidden;
             flex-grow: 1;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .playlist {
@@ -63,8 +105,7 @@
             margin: 20px 0;
             max-height: 300px;
             overflow-y: auto;
-            overflow-x: hidden;
-            /* Prevent horizontal scrolling */
+            transition: all 0.3s ease;
         }
 
         .playlist li {
@@ -73,12 +114,14 @@
             margin: 5px 0;
             border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
+            transition: transform 0.3s, background 0.3s, color 0.3s;
         }
 
         .playlist li:hover {
             transform: scale(1.05);
             background: rgba(255, 255, 255, 0.2);
+            color: #ffcc00;
+            text-shadow: 0 0 10px #ffcc00;
         }
 
         .controls {
@@ -86,6 +129,7 @@
             justify-content: center;
             gap: 10px;
             margin: 20px 0;
+            position: relative;
         }
 
         .controls button {
@@ -98,6 +142,7 @@
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .controls button:hover {
@@ -121,7 +166,33 @@
         .song-title {
             font-size: 1.5rem;
             margin-top: 10px;
-            animation: fadeIn 1s ease;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .progress-bar .progress {
+            height: 100%;
+            background: linear-gradient(145deg, #ffcc00, #e0b500);
+            width: 0;
+            border-radius: 5px;
+            animation: progressAnimation 0.1s linear infinite;
+        }
+
+        @keyframes progressAnimation {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
         }
 
         input {
@@ -132,20 +203,18 @@
             margin-bottom: 20px;
             font-size: 16px;
             outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: background 0.3s ease;
         }
 
         input::placeholder {
             color: #999;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+        input:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #ffcc00;
         }
 
         @media (max-width: 768px) {
@@ -179,6 +248,7 @@
             }
         }
     </style>
+
 </head>
 
 <body>
@@ -213,14 +283,16 @@
         // Functions for playlist generation, play/pause, song navigation, and filtering are reused.
         // Keep the rotating background and hover animations integrated into this design.
         //Navbar code
+        // Updated navbar toggle function with animation
         function myFunction() {
             var x = document.getElementById("myTopnav");
             if (x.className === "topnav") {
-                x.className += " responsive";
+                x.className += " responsive"; // Show navbar with animation
             } else {
-                x.className = "topnav";
+                x.className = "topnav"; // Hide navbar smoothly
             }
         }
+
 
         const playlistElement = document.querySelector('.playlist');
         const audioPlayer = document.getElementById('audioPlayer');
