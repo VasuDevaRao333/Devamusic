@@ -1,325 +1,518 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Singing Practice App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Music Player with Animation</title>
     <style>
-        /* Dark background and styling */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #f1f1f1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            overflow: hidden;
-        }
-
-        .container {
-            background-color: #1f1f1f;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #1d1f21, #4b4f56);
+            color: white;
             text-align: center;
-            width: 90%;
-            max-width: 400px;
-            transition: all 0.3s ease-in-out;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: backgroundAnimation 10s infinite alternate;
         }
 
-        .container:hover {
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        @keyframes backgroundAnimation {
+            0% {
+                background: linear-gradient(to bottom right, #1d1f21, #4b4f56);
+            }
+
+            50% {
+                background: linear-gradient(to bottom right, #4b4f56, #1d1f21);
+            }
+
+            100% {
+                background: linear-gradient(to bottom right, #1d1f21, #4b4f56);
+            }
         }
 
-        h1 {
-            margin-bottom: 20px;
-            color: #ffffff;
-            font-size: 2em;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-        }
-
-        .song-selection label,
-        .lyrics h3 {
-            color: #ffffff;
-        }
-
-        /* Style for the dropdown box */
-        .song-selection select {
+        .topnav {
+            overflow: hidden;
             background-color: #333;
-            color: #fff;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #444;
-            border-radius: 5px;
-            width: 100%;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.5s ease;
         }
 
-        .song-selection select:focus {
-            outline: none;
-            background-color: #555;
-        }
-
-        /* Scrollable lyrics area */
-        .lyrics {
-            height: 200px;
-            overflow-y: auto;
-        }
-
-        .lyrics pre {
-            text-align: left;
-            background-color: #333;
-            border-radius: 8px;
-            padding: 10px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .controls button {
-            padding: 12px 25px;
-            font-size: 16px;
-            margin: 10px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
+        .topnav a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
             transition: all 0.3s ease;
         }
 
-        .controls button:hover {
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        .topnav a:hover {
+            background-color: #575757;
+            transform: scale(1.1);
         }
 
-        #playSong {
-            background-color: #4CAF50;
+        .active {
+            background-color: #5f30ce;
             color: white;
-            box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
         }
 
-        #startRecording {
-            background-color: #FFC107;
-            color: black;
-            box-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
         }
 
-        #stopRecording {
-            background-color: #F44336;
-            color: white;
-            box-shadow: 0 0 10px rgba(244, 67, 54, 0.6);
+        .topnav a {
+            animation: slideIn 0.5s ease-out;
         }
 
-        #saveRecording {
-            background-color: #2196F3;
-            color: white;
-            box-shadow: 0 0 10px rgba(33, 150, 243, 0.6);
+        .music-player {
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            flex-grow: 1;
+            animation: fadeIn 1s ease-out;
         }
 
-        pre {
-            background-color: #222;
-            border-radius: 5px;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .playlist {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .playlist li {
+            background: rgba(255, 255, 255, 0.1);
             padding: 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s, color 0.3s;
         }
 
-        #recordedAudioPlayer {
-            margin-top: 15px;
+        .playlist li:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffcc00;
+            text-shadow: 0 0 10px #ffcc00;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .controls button {
+            background: linear-gradient(145deg, #5f30ce, #3b1c6d);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .controls button:hover {
+            background: linear-gradient(145deg, #ffcc00, #e0b500);
+            color: black;
+            transform: translateY(-6px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls button:active {
+            background: linear-gradient(145deg, #e0b500, #ffcc00);
+            transform: translateY(2px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+        }
+
+        .song-title {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .progress-bar {
             width: 100%;
-            max-width: 300px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            margin-top: 10px;
         }
 
-        .recording-status p {
-            color: #FFC107;
-            font-size: 1.1em;
-            font-weight: bold;
+        .progress-bar .progress {
+            height: 100%;
+            background: linear-gradient(145deg, #ffcc00, #e0b500);
+            width: 0;
+            border-radius: 5px;
+            animation: progressAnimation 0.1s linear infinite;
         }
 
-        /* Responsive Design */
+        @keyframes progressAnimation {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 20px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: background 0.3s ease;
+        }
+
+        input::placeholder {
+            color: #999;
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #ffcc00;
+        }
+
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-                max-width: 90%;
+            .music-player {
+                width: 90%;
+            }
+
+            .topnav a {
+                font-size: 14px;
             }
 
             .controls button {
                 padding: 10px 20px;
-                font-size: 14px;
-                width: 100%;
-                margin: 5px 0;
-            }
-
-            h1 {
-                font-size: 1.6em;
+                font-size: 16px;
             }
         }
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.3em;
+                font-size: 2rem;
+            }
+
+            .music-player {
+                width: 95%;
+                padding: 10px;
             }
 
             .controls button {
-                font-size: 12px;
-                padding: 8px 15px;
+                padding: 8px 16px;
+                font-size: 14px;
             }
         }
     </style>
+
 </head>
 
 <body>
-    <div class="container">
-        <h1>Singing Practice</h1>
+    <h1>Music Player</h1>
+    <div class="topnav" id="myTopnav">
+        <a href="./MusicPlayer.html" class="active">Home</a>
+        <a href="./Telugu.html">Telugu</a>
+        <a href="./Hindi.html">Hindi</a>
+        <a href="./Tamil.html">Tamil</a>
+        <a href="./English.html">English</a>
+        <a href="./Lyrics.html">Song Practice</a>
+    </div>
 
-        <div class="song-selection">
-            <label for="song">Choose a song:</label>
-            <select id="song">
-                <option value="song1">Song 1</option>
-                <option value="song2">Song 2</option>
-                <option value="song3">Song 3</option>
-                <option value="song4">Song 4</option>
-                <option value="song5">Song 5</option>
-                <option value="song6">Song 6</option>
-            </select>
-        </div>
-
-        <div class="lyrics">
-            <h3>Lyrics:</h3>
-            <pre id="lyrics"></pre>
-        </div>
-
+    <h2>All Mixed Songs</h2>
+    <div class="music-player">
+        <input type="text" id="searchBar" placeholder="Search for a song...">
+        <ul class="playlist">
+            <!-- Playlist dynamically populated here -->
+        </ul>
         <div class="controls">
-            <button id="playSong">Play Song</button>
-            <button id="startRecording">Start Recording</button>
-            <button id="stopRecording">Stop Recording</button>
-            <button id="saveRecording">Save Recording</button>
-            <button id="backButton">Back</button> <!-- New Back Button -->
-            <button id="forwardButton">Forward</button> <!-- New Forward Button -->
+            <button id="prevBtn">Previous</button>
+            <button id="playBtn">Play</button>
+            <button id="nextBtn">Next</button>
         </div>
-
-
-        <div class="recording-status">
-            <p id="recordingMessage"></p>
-        </div>
-
-        <audio id="audioPlayer" controls></audio>
-
-        <h3>Recorded Audio:</h3>
-        <audio id="recordedAudioPlayer" controls></audio>
-
+        <div class="song-title"></div>
+        <audio controls id="audioPlayer">
+            <source id="audioSource" src="" type="audio/mpeg">
+        </audio>
     </div>
 
     <script>
-        // Fetch the song data from the JSON file
-        fetch('songs.json')
-            .then(response => response.json())
-            .then(data => {
-                const songData = data;
+        // JavaScript code remains the same as in your previous implementation.
+        // Functions for playlist generation, play/pause, song navigation, and filtering are reused.
+        // Keep the rotating background and hover animations integrated into this design.
+        //Navbar code
+        // Updated navbar toggle function with animation
+        function myFunction() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive"; // Show navbar with animation
+            } else {
+                x.className = "topnav"; // Hide navbar smoothly
+            }
+        }
 
-                // Elements
-                const songSelect = document.getElementById('song');
-                const lyricsDisplay = document.getElementById('lyrics');
-                const playButton = document.getElementById('playSong');
-                const startRecordingButton = document.getElementById('startRecording');
-                const stopRecordingButton = document.getElementById('stopRecording');
-                const saveRecordingButton = document.getElementById('saveRecording');
-                const recordingMessage = document.getElementById('recordingMessage');
-                const audioPlayer = document.getElementById('audioPlayer');
-                const recordedAudioPlayer = document.getElementById('recordedAudioPlayer'); // New player for recorded audio
-                const backButton = document.getElementById('backButton'); // New back button
-                const forwardButton = document.getElementById('forwardButton'); // New forward button
 
-                let mediaRecorder;
-                let audioChunks = [];
-                let audioBlob;
-                let audioUrl;
-                let audio;
+        const playlistElement = document.querySelector('.playlist');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const audioSource = document.getElementById('audioSource');
+        const prevBtn = document.getElementById('prevBtn');
+        const playBtn = document.getElementById('playBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const songTitleElement = document.querySelector('.song-title');
 
-                // Update the lyrics and audio source based on the selected song
-                function updateLyrics() {
-                    const song = songData[songSelect.value];
-                    lyricsDisplay.textContent = song.lyrics;
-                    audioPlayer.src = song.audioSrc;
-                }
+        const songs = [
+            {
+                title: '01 - I Love You Akull',
+                source: './AllMixedSongs/AkullSongs (2).mp3',
+            },
+            {
+                title: '02 - Laal Chunariya Akull',
+                source: './AllMixedSongs/AkullSongs (4).mp3',
+            },
+            {
+                title: '03 - Solemate',
+                source: './AllMixedSongs/AkullSongs (8).mp3',
+            },
+            {
+                title: '04 - Bahana',
+                source: './AllMixedSongs/AkullSongs (11).mp3',
+            },
+            {
+                title: '05 - Future Mehbooba - Akull',
+                source: './AllMixedSongs/AkullSongs (14).mp3',
+            },
+            {
+                title: '06 - Sorry',
+                source: './AllMixedSongs/Alan_Waker (5).mp3',
+            },
+            {
+                title: '07 - Alone, Pt. 11',
+                source: './AllMixedSongs/Alan_Waker (6).mp3',
+            },
+            {
+                title: '08 - Believers',
+                source: './AllMixedSongs/Alan_Waker (7).mp3',
+            },
+            {
+                title: '09 - Blue - Alan Walker',
+                source: './AllMixedSongs/Alan_Waker (8).mp3',
+            },
+            {
+                title: '10 - On My Way',
+                source: './AllMixedSongs/Alan_Waker (10).mp3',
+            },
+            {
+                title: '11 - Este Loko',
+                source: './AllMixedSongs/Alan_Waker (21).mp3',
+            },
+            {
+                title: '12 - Izdmir Marsi',
+                source: './AllMixedSongs/Alan_Waker (22).mp3',
+            },
+            {
+                title: '13 - Landscape',
+                source: './AllMixedSongs/Alan_Waker (24).mp3',
+            },
+            {
+                title: '14 - On And On',
+                source: './AllMixedSongs/Alan_Waker (26).mp3',
+            },
+            {
+                title: '15 - Ye Lili Ye Lila',
+                source: './AllMixedSongs/Alan_Waker (29).mp3',
+            },
+            {
+                title: '16 - Gum Hai Kisi Ke Pyar Mein',
+                source: './AllMixedSongs/HindiOld (3).mp3',
+            },
+            {
+                title: '17 - Inteha Ho Gayi Intezaar ki',
+                source: './AllMixedSongs/HindiOld (6).mp3',
+            },
+            {
+                title: '18 - Dekha Ek Khwab To',
+                source: './AllMixedSongs/HindiOld (9).mp3',
+            },
+            {
+                title: '19 - Zindagi Pyar Ka Geet',
+                source: './AllMixedSongs/HindiOld (11).mp3',
+            },
+            {
+                title: '20 - Apni To Jaise Taise ',
+                source: './AllMixedSongs/HindiOld (23).mp3',
+            },
+            {
+                title: '21 - Zindagi Ki Yahi Reet Hai',
+                source: './AllMixedSongs/HindiOld (24).mp3',
+            },
+            {
+                title: '22 - Zindagi Ek Safar Hai',
+                source: './AllMixedSongs/HindiOld (33).mp3',
+            },
+            {
+                title: '23 - Mere Sapno Ki Rani Kab',
+                source: './AllMixedSongs/HindiOld (34).mp3',
+            },
+            {
+                title: '24 - Neele Neele Ambar Par',
+                source: './AllMixedSongs/HindiOld (41).mp3',
+            },
+            {
+                title: '25 - Zindagi Ke Safar Mein',
+                source: './AllMixedSongs/HindiOld (45).mp3',
+            },
+            {
+                title: '26- O Mere Dil Ke Chain',
+                source: './AllMixedSongs/HindiOld (52).mp3',
+            },
 
-                // Song selection change event
-                songSelect.addEventListener('change', updateLyrics);
 
-                // Play the song
-                playButton.addEventListener('click', () => {
-                    if (audioPlayer.src) {
-                        audioPlayer.play();
-                    } else {
-                        alert('Please select a song first!');
-                    }
-                });
 
-                // Start recording
-                startRecordingButton.addEventListener('click', () => {
-                    recordingMessage.textContent = 'Recording...';
-                    audioChunks = [];
+            // Add more songs here
 
-                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                        navigator.mediaDevices.getUserMedia({ audio: true })
-                            .then(stream => {
-                                mediaRecorder = new MediaRecorder(stream);
-                                mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
-                                mediaRecorder.onstop = () => {
-                                    audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                                    audioUrl = URL.createObjectURL(audioBlob);
-                                    audio = new Audio(audioUrl);
+        ];
 
-                                    recordedAudioPlayer.src = audioUrl;
-                                };
-                                mediaRecorder.start();
-                            })
-                            .catch(err => {
-                                console.error('Error accessing microphone:', err);
-                                recordingMessage.textContent = 'Microphone access denied.';
-                            });
-                    } else {
-                        recordingMessage.textContent = 'Your browser does not support audio recording.';
-                    }
-                });
+        let currentSongIndex = 0;
 
-                // Stop recording
-                stopRecordingButton.addEventListener('click', () => {
-                    if (mediaRecorder) {
-                        mediaRecorder.stop();
-                        recordingMessage.textContent = 'Recording stopped. You can listen to it now.';
-                    }
-                });
+        // Function to create a playlist item
+        function createPlaylistItem(song) {
+            const li = document.createElement('li');
+            li.textContent = song.title;
+            li.addEventListener('click', () => playSong(song.source));
+            return li;
+        }
 
-                // Save recording as a file
-                saveRecordingButton.addEventListener('click', () => {
-                    if (audioBlob) {
-                        const link = document.createElement('a');
-                        link.href = audioUrl;
-                        link.download = 'recording.wav';
-                        link.click();
-                    } else {
-                        recordingMessage.textContent = 'No recording to save.';
-                    }
-                });
+        // Function to populate the playlist
+        function populatePlaylist() {
+            songs.forEach(song => {
+                const playlistItem = createPlaylistItem(song);
+                playlistElement.appendChild(playlistItem);
+            });
+        }
 
-                // Back button functionality (Move the song 5 seconds back)
-                backButton.addEventListener('click', () => {
-                    if (audioPlayer.currentTime >= 5) {
-                        audioPlayer.currentTime -= 5; // Move back by 5 seconds
-                    } else {
-                        audioPlayer.currentTime = 0; // If less than 5 seconds, set it to the start
-                    }
-                });
+        // Function to play a song
+        function playSong(source) {
+            audioSource.src = source;
+            audioPlayer.load();
+            audioPlayer.play();
+            updateSongTitle();
+            updatePlayPauseIcon();
+        }
+        // Function to update the song title display
+        function updateSongTitle() {
+            const currentSong = songs[currentSongIndex];
+            songTitleElement.textContent = currentSong.title;
+        }
 
-                // Forward button functionality (Move the song 5 seconds forward)
-                forwardButton.addEventListener('click', () => {
-                    audioPlayer.currentTime += 5; // Move forward by 5 seconds
-                });
+        // Function to toggle play/pause icon
+        function updatePlayPauseIcon() {
+            if (audioPlayer.paused) {
+                playBtn.textContent = 'Play';
+            } else {
+                playBtn.textContent = 'Pause';
+            }
+        }
 
-                // Initial update of lyrics and song player
-                updateLyrics();
-            })
-            .catch(error => console.error('Error loading song data:', error));
+        // Function to play the previous song
+        function playPreviousSong() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            playSong(songs[currentSongIndex].source);
+        }
 
+        // Function to play the next song
+        function playNextSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            playSong(songs[currentSongIndex].source);
+        }
+
+        // Event listener for the play button
+        playBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+            } else {
+                audioPlayer.pause();
+            }
+            updatePlayPauseIcon();
+        });
+
+        // Event listener for the previous button
+        prevBtn.addEventListener('click', playPreviousSong);
+
+        // Event listener for the next button
+        nextBtn.addEventListener('click', playNextSong);
+
+        // Event listener to update the current song index when the audio ends
+        audioPlayer.addEventListener('ended', playNextSong);
+
+        // Initialize the playlist
+        populatePlaylist();
+        updateSongTitle();
+
+        // Autoplay the first song
+        playSong(songs[currentSongIndex].source);
+
+
+        <!-- ... (existing JavaScript code) ... -->
+
+        // Function to filter songs based on the search query
+        function filterSongs(searchQuery) {
+            const filteredSongs = songs.filter(song => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
+            playlistElement.innerHTML = ''; // Clear the existing playlist
+            filteredSongs.forEach(song => {
+                const playlistItem = createPlaylistItem(song);
+                playlistElement.appendChild(playlistItem);
+            });
+        }
+
+        // Event listener for the search bar input
+        const searchBar = document.getElementById('searchBar');
+        searchBar.addEventListener('input', () => {
+            const searchQuery = searchBar.value.trim();
+            filterSongs(searchQuery);
+        });
     </script>
 </body>
 
